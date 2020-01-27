@@ -27,7 +27,7 @@ def parse_dns(dns_raw)
 
 		 records=element.split(",")
 
-		 if(records[0].strip=="A")
+		if(records[0].strip=="A")
 
 			a[records[1].strip]=records[2].strip
 
@@ -61,7 +61,7 @@ def resolve(dns_records, lookup_chain, domain)
 
 			lookup_chain.push(cname[domain])
 			domain=cname[domain]
-			return resolve(dns_records,lookup_chain,domain)
+			resolve(dns_records,lookup_chain,domain)
 
 		end	
 
