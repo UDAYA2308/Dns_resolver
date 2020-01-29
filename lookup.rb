@@ -19,29 +19,27 @@ domain = get_command_line_argument
 dns_raw = File.readlines("zone")
 
 def parse_dns(raw)
-	dns_records = {}
-	raw.
-	  reject {|line| line.empty? }.
-	  map {|line| line.strip.split(", ") }.
-	  reject {|record| record.length < 3 }.
-	  each {|record| dns_records[record[1]] = { :type => record[0], :val => record[2] } }
-	  dns_records
+  dns_records = {}
+  raw.
+    reject { |line| line.empty? }.
+    map { |line| line.strip.split(", ") }.
+    reject { |record| record.length < 3 }.
+    each { |record| dns_records[record[1]] = { :type => record[0], :val => record[2] } }
+  dns_records
 end
 
-
 def resolve(dns_records, lookup_chain, domain)
-
-	record=dns_records[domain]
-	if record!=nil 
-		if record[:type]=="A"
-			return lookup_chain.push record[:val]
-		else
-			lookup_chain.push record[:val]
-			return resolve(dns_records,lookup_chain,record[:val])
-		end
-	end
-	lookup_chain.clear
-	lookup_chain.push ("Error: record not found for "+domain)
+  record = dns_records[domain]
+  if record != nil
+    if record[:type] == "A"
+      return lookup_chain.push record[:val]
+    else
+      lookup_chain.push record[:val]
+      return resolve(dns_records, lookup_chain, record[:val])
+    end
+  end
+  lookup_chain.clear
+  lookup_chain.push ("Error: record not found for " + domain)
 end
 
 # To complete the assignment, implement `parse_dns` and `resolve`.
